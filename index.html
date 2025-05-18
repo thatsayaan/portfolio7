@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Ayaan's Portfolio</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="https://kit.fontawesome.com/e427def6e2.js" crossorigin="anonymous"></script>
+        
+</head>
+<body>
+
+
+<div id="header">
+     <div class="container">
+        <nav>
+            <img src="images/logo final (1).png" class="logo">
+            <ul id="sidemenu"> 
+                <li><a href="#header">Home</a></li>
+                <li><a href="#about"><span>About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#portfolio">Portfolio</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <i class="fa-solid fa-xmark" onclick="closemenu()"></i>
+            </ul>
+            <i class="fa-solid fa-bars"onclick="openmenu()"></i>
+        </nav>
+        <div class="header-text">
+            <p>Software Engineer</p>
+            <h1>Hi, I am <span>Ayaan</span><br> Masood from India</h1>
+        </div>
+     </div>
+   
+</div> 
+<!-----------------------------about--------------------------------->
+<div id="about">
+
+    <div class="container">
+        <div class="row">
+            <div class="about-col-1">
+                <img src="images/shirt black.png">
+            </div>
+            <div class="about-col-2">
+                <h1 class="sub-title">About Me<br></h1>
+                <p><br>I am a dedicated B.Tech graduate specializing in Computer Science, with a keen focus on Artificial Intelligence and Machine Learning. Over the course of my academic journey, I have developed a strong foundation in advanced computing concepts, reinforced by practical experience gained through multiple projects and internships. These opportunities have allowed me to apply theoretical knowledge to real-world problems, enhancing my problem-solving abilities and technical proficiency in areas such as data analysis, algorithm design, and predictive modeling.
+
+Beyond my academic pursuits, I am deeply passionate about sports and physical fitness. As an enthusiastic football player and the former captain of my college football team, I have honed my leadership skills and team collaboration, leading my team to several victories and fostering a competitive yet supportive environment. Additionally, I am committed to maintaining a healthy lifestyle through regular gym workouts and swimming, which have taught me discipline, resilience, and time management.
+
+This blend of technical expertise, leadership experience, and a strong commitment to personal fitness shapes me into a well-rounded individual prepared to take on challenging roles in the tech industry. I am eager to continue expanding my knowledge, contribute effectively to innovative projects, and leverage my diverse skills to make a meaningful impact in the field of Artificial Intelligence and beyond.
+
+
+</p>
+                
+                <div class="tab-titles">
+                    <p class="tab-links active-link" onclick="opentab('skills')">Skills</p>
+                    <p class="tab-links" onclick="opentab('experience')">Experience</p>
+                    <p class="tab-links" onclick="opentab('education')">Education</p>
+                </div>
+                <!---------------------SKILLS-------------------------------->
+                <div class="tab-contents active-tab" id="skills">
+                    <ul>
+                        <li><span>Programming Languages:</span><br>Python, C++, HTML, CSS</li>
+                        <li><span>Database</span><br>MySQL</li>
+                        <li><span>IDEs</span><br>PyCharm, Visual Studio Code</li>
+                        <li><span>Tools</span><br>GitHub, MS Excel, AWS Services, Canva,<br>  Google Workspace (Docs, Slides, Sheets, Forms)</li>
+                        <li><span>Soft Skills</span><br>Effective Communication, Team Collaboration, Problem-Solving, Adaptability, Time Management
+
+</li>
+                    </ul>
+                </div>
+                <!---------------------experience-------------------------------->
+                <div class="tab-contents" id="experience">
+                    <ul>
+                        <li><span>Internships</span><br>Innovate Gemini Technologies: Data Analyst Trainee<br>
+CodSoft: Python Programmer Intern<br>
+Oasis Infobyte: Cloud Computing Internship
+<br>8 Bit Warriors: Data Analyst Intern
+<br>International Model United Nations (IMUN): Campus Ambassador Intern
+<br>Zidio: Data Science Analyst</li>
+                        <li><span>Projects</span><br> Banking Project, Typing Speed Test, Spinner Game, Portfolio, Quiz Game, Marksheet Builder, Shopping Clone, Number Shuffle,
+Customer Billing, Vehicle Verification, IQ Calculator, City Temperature, Chat Bot, Random Wheel, Music player,
+Application Manager, Railway Booking System, Monthly Expense Tracker.
+</li>
+                        
+                        <li><span>Certificates</span><br>Python(DSA), C++, Web Development, Web3, Aptitude and Reasoning, AWS Cloud Practitioner, Product Management, Azure Cloud, Data Visualization</li>
+                    </ul>
+                </div>
+                <!---------------------Education-------------------------------->
+                <div class="tab-contents" id="education">
+                    <ul>
+                        <li><span>Bachelor of Technology (B.Tech)</span><br>Technocrats Institute of Technology<br>Stream: Computer Science and Engineering<br>Specialization: Artificial Intelligence and Machine Learning 
+                        </li>
+                        <li><span>Senior Secondary (Class XII)</span><br> All Saint's School, Bhopal<br>
+Affiliated to the MP Board of Secondary Education (MPBSE)
+<br>Year of Completion: 2021
+                        </li>
+                     <li><span>Secondary (Class X)</span><br>Campion School, Bhopal<br>
+Central Board of Secondary Education (CBSE)
+<br>Year of Completion: 2019
+                    </li>                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>        
+</div>
+<!-------------SERVICES-------------------->
+<div id="services">
+    <div class="container">
+        <h1 class="sub-title">My Services</h1>
+        <div class="services-list">
+            <div>
+                 <i class="fa-solid fa-globe"></i>
+                <h2>Web Development</h2>
+                <p>
+                    Expert web development services focused on delivering fully responsive, scalable, and high-performance websites built with modern HTML, CSS, and JavaScript standards. Specializing in bespoke front-end solutions that ensure seamless functionality across all devices. Committed to producing clean, maintainable code that enhances brand identity and drives user engagement.
+                </p>
+                <a href="web.html">Learn more</a>
+            </div>
+            <div>
+                <i class="fa-brands fa-python"></i>
+                <h2>Python Projects</h2>
+                <p>
+                    Professional Python development services offering robust, efficient, and scalable solutions for a variety of applications. Expertise in writing clean, maintainable code for automation, data analysis, web development, and scripting tasks. Focused on delivering reliable and optimized software that meets client requirements and drives business value.
+                </p>
+                <a href="python.html">Learn more</a>
+            </div>
+            <div>
+                <i class="fa-solid fa-database"></i>
+                <h2>Data Analytics</h2>
+                 <p>
+                     Data analytics services providing insightful, data-driven solutions to inform strategic decisions. Expertise in extracting, processing, and visualizing complex datasets using advanced analytical tools and techniques. Committed to delivering actionable insights that enhance business performance and drive growth.
+                </p>
+                <a href="data.html">Learn more</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!----------------------------------------PORTFOLIO-------------------------------------------->
+<div id="portfolio">
+    <div class="container">
+        <h1 class=""sub-title>My Work</h1>
+        <div class="work-list">
+            <div class="work">
+                <img src="images/work3.jpg">
+                <div class="layer">
+                    <h3>Game</h3>
+                    <P></thead>Created a simple and engaging game using HTML, highlighting UI and linking expertise.</P>
+                    <a href="game.html"><i class="fa-solid fa-up-right-from-square"></i></a>
+                </div>
+            </div>   
+            <div class="work">
+                <img src="images/work2 (2).jpg">
+                <div class="layer">
+                    <h3>Created-OVM</h3>
+                    <P>Developed a secure, web-based voting platform with biometric authentication, enabling remote and transparent elections.
+                    </thead></P>
+                    <a href="images/voting machine.pdf"><i class="fa-solid fa-up-right-from-square"></i></a>
+                </div>
+            </div>
+            <div class="work">
+                <img src="images/work1.jpg">
+                <div class="layer">
+                    <h3>Desktop Assistant</h3>
+                    <p>Desktop assistant with voice and GUI interfaces, automating tasks to enhance user productivity.</thead></p>
+                    <a href="images/DI PROJECT.zip"><i class="fa-solid fa-up-right-from-square"></i></a>
+                </div>
+                
+            </div>
+        </div>
+        <a href="#" class="btn">See more (under-construction)</a>
+    </div>
+</div>
+<!----------------------------------CONTACT----------------------------------->
+<div id="contact">
+    <div class="container">
+        <div class="row">
+            <div class="contact-left">
+                <h1 class="sub-title">Contact Me</h1>
+                <p><i class="fa-solid fa-paper-plane"></i>ayaanmasood2003@gmail.com</p>
+                <p><i class="fa-solid fa-phone"></i>+91 9770370607</p>
+                <div class="social-icons">
+                    <a href="https://www.linkedin.com/in/thatsayaan?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BaEXw2938R96F8Rgq%2B7qajw%3D%3D"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="https://www.facebook.com/share/16HZrJzdzQ/"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/thats_ayaan?igsh=MW53Nno2MG56d3F2eA=="><i class="fa-brands fa-instagram"></i></a>
+                </div>
+                <a href="images/Ayaan's CV.pdf" class="btn btn2">View CV</a>
+                
+            </div>
+
+            <div class="contact-right">
+                <form name="submit-to-google-sheet">
+                    <input type="text" name="Name" placeholder="Your Name" required>
+                    <input type="email" name="email" placeholder="Your Email" required>
+                    <textarea name="Message" rows="6" placeholder="Your Message"></textarea>
+                    <button type="submit" class="btn btn2">Submit</button>
+                </form>
+                <span id="msg"></span>
+            </div>
+        </div>    
+    </div>
+    <div class="copyright">
+        <p>© 2025 content By Ayaan <i class="fa-solid fa-heart"></i></p>
+    </div>
+</div>
+
+
+
+<script>
+    var tablinks = document.getElementsByClassName("tab-links");
+    var tabcontents = document.getElementsByClassName("tab-contents");
+   
+    function opentab(tabname){
+        for(tablink of tablinks){
+            tablink.classList.remove("active-link");
+        }
+        for(tabcontent of tabcontents){
+            tabcontent.classList.remove("active-tab");
+        }
+        event.currentTarget.classList.add("active-link");
+        document.getElementById(tabname).classList.add("active-tab");
+
+    }
+</script>
+
+<script>
+    var sidemeu = document.getElementById("sidemenu");
+
+    function openmenu(){
+        sidemeu.style.right = "0";
+    }
+    function closemenu(){
+        sidemeu.style.right = "-200px";
+    }
+
+
+</script>
+
+<script>
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbyHWUgWPgkEp8WgBcjSE23d2L9vLs0-u1EBS71ocv3bIcRJtkZt3I_lBMOwjzIcj7Hu/exec'
+  const form = document.forms['submit-to-google-sheet']
+  const msg = document.getElementById("msg")
+
+  form.addEventListener('submit', e => {
+    e.preventDefault()
+    fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+      .then(response => {
+        msg.innerHTML = "Message sent successfully"
+        setTimeout(function(){
+            msg.innerHTML=""
+        },5000)
+        form.reset()
+      })
+      .catch(error => console.error('Error!', error.message))
+  })
+</script>
+
+</body>    
+</html>

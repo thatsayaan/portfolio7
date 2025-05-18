@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Breakout Game with 5s Restart Timer</title>
+  <style>
+    body {
+      background: #222;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+      color: #0ff;
+      user-select: none;
+      -webkit-user-select: none;
+      -ms-user-select: none;
+    }
+    #score {
+      font-size: 24px;
+      margin: 10px;
+    }
+    #countdown {
+      font-size: 72px;
+      font-weight: bold;
+      margin: 20px;
+      display: none;
+    }
+    canvas {
+      background: #111;
+      border: 2px solid #0ff;
+      box-shadow: 0 0 10px #0ff;
+      display: block;
+      touch-action: none; /* prevent default gestures */
+    }
+  </style>
+</head>
+<body>
+
+<div id="score">Score: 0</div>
+<div id="countdown"></div>
+<canvas id="gameCanvas" width="480" height="320"></canvas>
+
+<script>
+  const canvas = document.getElementById("gameCanvas");
+  const ctx = canvas.getContext("2d");
+  const scoreDisplay = document.getElementById("score");
+  const countdownDisplay = document.getElementById("countdown");
+
+  const ballRadius = 10;
+  let x = canvas.width / 2;
+  let y = canvas.height - 30;
+  let dx = 2;
+  let dy = -2;
+
+  const paddleHeight = 10;
+  const paddleWidth = 75;
+  let paddleX = (canvas.width - paddleWidth) / 2;
+
+  const brickRowCount = 3;
+  const brickColumnCount = 5;
+  const brickWidth = 75;
+  const brickHeight = 20;
+  const brickPadding = 10;
+  const brickOffsetTop = 30;
+  const brickOffsetLeft = 30;
+
+  let rightPressed = false;
+  let leftPressed = false;
+  let score = 0;
+  let gameRunning = true;
+  let countdownInterval;
+
+  // Create bricks array
+  const bricks = [];
+  for(let c=0; c<brickColumnCount; c++) {
+    bricks[c] = [];
+    for(let r=0; r<brickRowCount; r++) {
+      bricks[c][r] = { x: 0, y: 0, status: 1 };
+    }
+  }
+
+  function drawBall() {
+    ctx.beginPath();
+    ctx.arc(x, y, ballRadius, 0, Math.PI*2);
+    ctx.fillStyle = "#0ff";
+    ctx.fill();
+    ctx.closePath();
+  }
+
+  function drawPaddle() {
+    ctx.beginPath();
+    ctx.rect(paddleX, canvas.height - paddleHeight - 10, paddleWidth, paddleHeight);
+    ctx.fillStyle = "#0ff";
+    ctx.fill();
+    ctx.closePath();
+  }
+
+  function drawBricks() {
+    for(let c=0; c<brickColumnCount; c++) {
+      for(let r=0; r<brickRowCount; r++) {
+        if(bricks[c][r].status == 1) {
+          const brickX = c*(brickWidth + brickPadding) + brickOffsetLeft;
+          const brickY = r*(brickHeight + brickPadding) + brickOffsetTop;
+          bricks[c][r].x = brickX;
+          bricks[c][r].y = brickY;
+          ctx.beginPath();
+          ctx.rect(brickX, brickY, brickWidth, brickHeight);
+          ctx.fillStyle = "#0ff";
+          ctx.fill();
+          ctx.closePath();
+        }
+      }
+    }
+  }
+
+  function collisionDetection() {
+    for(let c=0; c<brickColumnCount; c++) {
+      for(let r=0; r<brickRowCount; r++) {
+        const b = bricks[c][r];
+        if(b.status == 1) {
+          if(x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
+            dy = -dy;
+            b.status = 0;
+            score++;
+            scoreDisplay.textContent = "Score: " + score;
+            if(score == brickRowCount * brickColumnCount) {
+              endGame("You Win! Score: " + score);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  function drawScore() {
+    scoreDisplay.textContent = "Score: " + score;
+  }
+
+  function draw() {
+    if(!gameRunning) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawBricks();
+    drawBall();
+    drawPaddle();
+    collisionDetection();
+    drawScore();
+
+    // Ball movement
+    x += dx;
+    y += dy;
+
+    // Bounce off left and right walls
+    if(x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
+      dx = -dx;
+    }
+    // Bounce off top wall
+    if(y + dy < ballRadius) {
+      dy = -dy;
+    }
+    // Paddle collision or bottom (lose)
+    else if(y + dy > canvas.height - ballRadius - paddleHeight - 10) {
+      if(x > paddleX && x < paddleX + paddleWidth) {
+        dy = -dy;
+      } else if(y + dy > canvas.height - ballRadius) {
+        endGame("Game Over! Score: " + score);
+      }
+    }
+
+    // Paddle movement from keyboard
+    if(rightPressed && paddleX < canvas.width - paddleWidth) {
+      paddleX += 7;
+    } else if(leftPressed && paddleX > 0) {
+      paddleX -= 7;
+    }
+
+    requestAnimationFrame(draw);
+  }
+
+  function endGame(message) {
+    gameRunning = false;
+    countdownDisplay.style.display = "block";
+    scoreDisplay.textContent = message;
+
+    let count = 5;
+    countdownDisplay.textContent = count;
+
+    countdownInterval = setInterval(() => {
+      count--;
+      if(count <= 0) {
+        clearInterval(countdownInterval);
+        location.reload();
+      } else {
+        countdownDisplay.textContent = count;
+      }
+    }, 1000);
+  }
+
+  // Keyboard controls
+  document.addEventListener("keydown", e => {
+    if(e.key === "Right" || e.key === "ArrowRight") {
+      rightPressed = true;
+    } else if(e.key === "Left" || e.key === "ArrowLeft") {
+      leftPressed = true;
+    }
+  });
+
+  document.addEventListener("keyup", e => {
+    if(e.key === "Right" || e.key === "ArrowRight") {
+      rightPressed = false;
+    } else if(e.key === "Left" || e.key === "ArrowLeft") {
+      leftPressed = false;
+    }
+  });
+
+  // Touch controls for mobile
+  let ongoingTouch = null;
+
+  canvas.addEventListener("touchstart", e => {
+    e.preventDefault();
+    const touch = e.changedTouches[0];
+    ongoingTouch = { id: touch.identifier, x: touch.clientX };
+  }, { passive: false });
+
+  canvas.addEventListener("touchmove", e => {
+    e.preventDefault();
+    for (let touch of e.changedTouches) {
+      if (ongoingTouch && touch.identifier === ongoingTouch.id) {
+        let deltaX = touch.clientX - ongoingTouch.x;
+        ongoingTouch.x = touch.clientX;
+        paddleX += deltaX;
+        // Limit paddle position within canvas
+        if (paddleX < 0) paddleX = 0;
+        if (paddleX > canvas.width - paddleWidth) paddleX = canvas.width - paddleWidth;
+      }
+    }
+  }, { passive: false });
+
+  canvas.addEventListener("touchend", e => {
+    e.preventDefault();
+    for (let touch of e.changedTouches) {
+      if (ongoingTouch && touch.identifier === ongoingTouch.id) {
+        ongoingTouch = null;
+      }
+    }
+  }, { passive: false });
+
+  canvas.addEventListener("touchcancel", e => {
+    e.preventDefault();
+    ongoingTouch = null;
+  }, { passive: false });
+
+  draw();
+</script>
+
+</body>
+</html>

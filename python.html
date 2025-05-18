@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Python Programming Showcase</title>
+<style>
+  body {
+    background: #121212;
+    color: #e53935;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0; padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+  }
+
+  .container {
+    max-width: 900px;
+    background: #1e1e1e;
+    border-radius: 12px;
+    padding: 40px 50px;
+    box-shadow: 0 8px 24px rgba(229, 57, 53, 0.6);
+    line-height: 1.7;
+    width: 100%;
+  }
+
+  h1 {
+    font-weight: 900;
+    font-size: 3rem;
+    margin-bottom: 30px;
+    text-align: center;
+    letter-spacing: 1.2px;
+  }
+
+  p {
+    font-size: 1.2rem;
+    color: #ff7961;
+    margin-bottom: 28px;
+  }
+
+  strong {
+    color: #ff3d00;
+    font-weight: 700;
+  }
+
+  /* Buttons */
+  .btn-group {
+    text-align: center;
+    margin: 30px 0 40px 0;
+  }
+
+  button {
+    background-color: #e53935;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    margin: 0 12px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 8px rgba(229, 57, 53, 0.5);
+  }
+  button:hover {
+    background-color: #ff3d00;
+  }
+  button:focus {
+    outline: 3px solid #ff7961;
+  }
+
+  /* Code display area */
+  pre {
+    background: #000;
+    color: #ff7961;
+    padding: 30px;
+    border-radius: 12px;
+    font-family: 'Fira Mono', monospace, monospace;
+    font-size: 1.1rem;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    box-shadow: 0 0 20px #e53935;
+    max-height: 320px;
+    overflow-y: auto;
+    user-select: text;
+  }
+
+  /* Responsive */
+  @media (max-width: 700px) {
+    .container {
+      padding: 30px 25px;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 25px;
+    }
+    p {
+      font-size: 1rem;
+      margin-bottom: 20px;
+    }
+    button {
+      font-size: 1rem;
+      padding: 10px 20px;
+      margin: 8px 6px;
+    }
+    pre {
+      font-size: 1rem;
+      max-height: 240px;
+      padding: 20px;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Python Programming: Powering Innovation and Efficiency</h1>
+
+    <p>
+      Python is a <strong>high-level, versatile programming language</strong> celebrated for its simplicity and readability. Its clean syntax and comprehensive standard library make it accessible to both beginners and seasoned developers. Python supports a wide range of fields including <strong>web development, data science, artificial intelligence, automation, and scientific research</strong>.
+    </p>
+
+    <p>
+      Robust frameworks such as <strong>Django</strong> and <strong>Flask</strong> streamline web application development, while powerful libraries like <strong>Pandas, NumPy, TensorFlow, and Scikit-learn</strong> empower data professionals to perform complex data analysis and machine learning tasks. Python’s flexibility and extensive ecosystem continue to drive innovation across industries.
+    </p>
+
+    <p>
+      With dynamic typing, an active community, and rich documentation, Python fosters efficient problem-solving and rapid prototyping. Leveraging Python enables developers to build scalable, maintainable, and high-performance solutions that transform ideas into reality.
+    </p>
+
+    <div class="btn-group" role="group" aria-label="Python code examples">
+      <button onclick="showCode('hello')">Hello World</button>
+      <button onclick="showCode('logic')">Logic Explanation</button>
+      <button onclick="showCode('pseudocode')">Pseudocode</button>
+    </div>
+
+    <pre id="codeDisplay" aria-live="polite" aria-atomic="true"></pre>
+  </div>
+
+<script>
+  const codes = {
+    hello: 
+`# Hello World in Python
+def greet():
+    print("Hello, world!")
+
+greet()`
+    ,
+    logic: 
+`# Logic Explanation: Factorial Function
+# Factorial of n (n!) is the product of all positive integers <= n.
+# Base case: factorial(0) = 1
+# For n > 0, factorial(n) = n * factorial(n - 1)
+# This is implemented via recursion.`
+
+    ,
+    pseudocode: 
+`// Pseudocode for Fibonacci sequence generation
+function Fibonacci(n)
+    create list seq with first two numbers: 0, 1
+    for i from 2 to n-1 do
+        nextNumber = seq[i-1] + seq[i-2]
+        append nextNumber to seq
+    return seq
+
+// Prints first n Fibonacci numbers`
+  };
+
+  function showCode(key) {
+    const display = document.getElementById('codeDisplay');
+    display.textContent = codes[key];
+  }
+
+  // Show the first example by default
+  showCode('hello');
+</script>
+
+</body>
+</html>

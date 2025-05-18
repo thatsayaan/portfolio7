@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sales Data Analytics</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background: #000;
+      color: #f44336;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+    h2 {
+      margin-bottom: 10px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      color: #f44336;
+      text-shadow: 0 0 8px #f44336;
+    }
+    .chart-container {
+      background: #111;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(244, 67, 54, 0.6);
+      padding: 25px 40px;
+      max-width: 600px;
+      width: 90vw;
+    }
+    canvas {
+      display: block;
+      max-width: 100%;
+      height: 300px !important;
+    }
+    .summary {
+      max-width: 600px;
+      width: 90vw;
+      margin-top: 30px;
+      background: #111;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(244, 67, 54, 0.6);
+      padding: 20px 30px;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #ff7961;
+      text-align: center;
+    }
+    footer {
+      margin-top: 30px;
+      font-size: 0.9rem;
+      color: #555;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Monthly Sales Data (2025)</h2>
+  <div class="chart-container">
+    <canvas id="salesChart"></canvas>
+  </div>
+
+  <div class="summary">
+    <strong>How Data Analysis Works:</strong><br />
+    Data analytics is a comprehensive and systematic approach to gathering, cleaning, and examining vast amounts of raw data to extract valuable insights and actionable information. It involves applying various statistical, mathematical, and computational techniques to identify hidden patterns, correlations, and trends within complex datasets. Through this process, organizations are empowered to make well-informed, data-driven decisions that enhance business outcomes, optimize operational efficiency, and uncover new growth opportunities.
+
+Data analytics encompasses multiple stages, starting with data collection from diverse sources, followed by data cleaning to ensure accuracy and consistency. Subsequently, sophisticated analytical methods—including descriptive, diagnostic, predictive, and prescriptive analytics—are employed to interpret the data. These techniques help in understanding past performance, diagnosing issues, forecasting future trends, and recommending optimal courses of action.
+
+The use of advanced visualization tools and software further enables the transformation of raw data into clear, intuitive charts, graphs, and dashboards, making complex insights accessible to stakeholders at all levels. By leveraging these insights, businesses can gain a deeper understanding of customer behaviors, market dynamics, and operational bottlenecks. This empowers them to tailor products and services, improve customer experiences, mitigate risks, and maintain a competitive edge in rapidly evolving industries.
+
+In addition to business applications, data analytics plays a crucial role in diverse fields such as healthcare, finance, manufacturing, and government, driving innovation and improving decision-making processes. With the continual advancement of technologies like artificial intelligence and machine learning, data analytics is becoming increasingly sophisticated, enabling real-time analysis and predictive capabilities that further transform how organizations operate and compete in the global market.
+
+
+  </div>
+
+  <footer></footer>
+
+  <script>
+    const ctx = document.getElementById('salesChart').getContext('2d');
+    const salesChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        datasets: [{
+          label: 'Sales (in thousands)',
+          data: [15, 25, 12, 30, 22, 18, 27],
+          backgroundColor: 'rgba(244, 67, 54, 0.8)',
+          borderColor: 'rgba(244, 67, 54, 1)',
+          borderWidth: 2,
+          borderRadius: 6,
+          hoverBackgroundColor: 'rgba(244, 67, 54, 1)'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: {
+          duration: 1000,
+          easing: 'easeOutQuart'
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              color: '#f44336',
+              font: {
+                size: 14,
+                weight: '600'
+              }
+            },
+            grid: {
+              color: '#330000',
+              borderColor: '#f44336'
+            }
+          },
+          x: {
+            ticks: {
+              color: '#f44336',
+              font: {
+                size: 14,
+                weight: '600'
+              }
+            },
+            grid: {
+              color: '#330000'
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            labels: {
+              color: '#f44336',
+              font: {
+                size: 16,
+                weight: '700'
+              }
+            }
+          },
+          tooltip: {
+            backgroundColor: '#f44336',
+            titleColor: '#330000',
+            bodyColor: '#330000',
+            cornerRadius: 6,
+            padding: 10
+          }
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
