@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html>
 <head>
   <title>Game Selector</title>
@@ -6,8 +6,8 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background-color: #111;
-      color: #0ff;
+      background-color: #000;
+      color: #f00;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -27,14 +27,14 @@
       margin: 10px;
       font-size: 20px;
       cursor: pointer;
-      background-color: #0ff;
+      background-color: #f00;
       border: none;
-      color: #111;
+      color: #000;
       border-radius: 5px;
     }
     canvas {
       background: #000;
-      border: 2px solid #0ff;
+      border: 2px solid #f00;
       margin-top: 10px;
     }
     #memory-grid {
@@ -51,7 +51,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 2px solid #0ff;
+      border: 2px solid #f00;
       font-size: 24px;
       cursor: pointer;
       user-select: none;
@@ -221,7 +221,7 @@
     function drawBall() {
       ctx.beginPath();
       ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
-      ctx.fillStyle = "#0ff";
+      ctx.fillStyle = "#f00";
       ctx.fill();
       ctx.closePath();
     }
@@ -229,7 +229,7 @@
     function drawPaddle() {
       ctx.beginPath();
       ctx.rect(paddleX, canvas.height - paddleHeight - 10, paddleWidth, paddleHeight);
-      ctx.fillStyle = "#0ff";
+      ctx.fillStyle = "#f00";
       ctx.fill();
       ctx.closePath();
     }
@@ -244,7 +244,7 @@
             bricks[c][r].y = brickY;
             ctx.beginPath();
             ctx.rect(brickX, brickY, brickWidth, brickHeight);
-            ctx.fillStyle = "#0ff";
+            ctx.fillStyle = "#f00";
             ctx.fill();
             ctx.closePath();
           }

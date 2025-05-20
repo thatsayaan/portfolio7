@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Electro Chatbot with Tutorial</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: white;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+    #background-questions {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      color: rgba(255, 255, 255, 0.05);
+      font-size: 12px;
+      padding: 10px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      z-index: 0;
+      pointer-events: none;
+      user-select: none;
+      font-family: monospace;
+      line-height: 1.3;
+    }
+
+    /* Container holding chatbox and tutorial side by side */
+    #main-container {
+      display: flex;
+      gap: 20px;
+      width: 90vw;
+      max-width: 1000px;
+      height: 80vh;
+      z-index: 10;
+      position: relative;
+    }
+
+    #chat-container {
+      background: #222;
+      padding: 20px;
+      width: 400px;
+      height: 100%;
+      border-radius: 12px;
+      box-shadow: 0 0 15px #ff0000;
+      display: flex;
+      flex-direction: column;
+      color: white;
+    }
+    #chatbox {
+      background: #333;
+      padding: 15px;
+      flex-grow: 1;
+      overflow-y: auto;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      color: white;
+    }
+    .msg {
+      margin: 8px 0;
+    }
+    .user {
+      color: #f00;
+      text-align: right;
+    }
+    .bot {
+      color: #ff4d4d;
+      text-align: left;
+    }
+    #input-area {
+      display: flex;
+      gap: 10px;
+    }
+    #user-input {
+      flex-grow: 1;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+      outline: none;
+    }
+    button {
+      background: #ff0000;
+      border: none;
+      color: white;
+      padding: 10px 18px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background: #cc0000;
+    }
+
+    /* Tutorial Button - Center Bottom */
+    #tutorial-btn {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #ff0000;
+      padding: 12px 20px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      z-index: 100;
+      box-shadow: 0 0 10px #ff0000;
+      user-select: none;
+      transition: background-color 0.3s ease;
+    }
+    #tutorial-btn:hover {
+      background: #cc0000;
+    }
+
+    /* Tutorial panel */
+    #tutorial-panel {
+      background: #222;
+      border-radius: 12px;
+      width: 400px;
+      height: 100%;
+      padding: 20px;
+      overflow-y: auto;
+      box-shadow: 0 0 15px #ff0000;
+      color: #fff;
+      display: none;
+      flex-shrink: 0;
+    }
+    #tutorial-panel h2 {
+      margin-top: 0;
+      text-align: center;
+      color: #ff4d4d;
+    }
+    #close-tutorial {
+      display: block;
+      margin: 10px auto 0;
+      background: #cc0000;
+      border: none;
+      padding: 10px 18px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      color: white;
+      width: 100px;
+      text-align: center;
+      transition: background-color 0.3s ease;
+    }
+    #close-tutorial:hover {
+      background: #990000;
+    }
+  </style>
+</head>
+<body>
+
+<div id="background-questions"></div>
+
+<div id="main-container">
+  <div id="chat-container">
+    <div id="chatbox"></div>
+    <div id="input-area">
+      <input type="text" id="user-input" placeholder="Type your question here..." autocomplete="off" />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <div id="tutorial-panel">
+    <h2>Basic Questions You Can Ask</h2>
+    <pre id="tutorial-content"></pre>
+    <button id="close-tutorial">Close</button>
+  </div>
+</div>
+
+<button id="tutorial-btn">Tutorial</button>
+
+<script>
+const chatData = [
+  { question: "hi", answer: "Hello! How can I help you today?" },
+  { question: "hello", answer: "Hello! How can I help you today?" },
+  { question: "hey", answer: "Hello! How can I help you today?" },
+  { question: "how are you", answer: "I'm doing great, thank you!" },
+  { question: "what is your name", answer: "I'm Electro, your chatbot assistant. Ayaan Masood made me" },
+  { question: "what can you do", answer: "I can answer your questions and chat with you." },
+  { question: "tell me a joke", answer: "Why don't scientists trust atoms? Because they make up everything!" },
+  { question: "who created you", answer: "I was created by a talented developer." },
+  { question: "what is the time", answer: () => new Date().toLocaleTimeString() },
+  { question: "thank you", answer: "You're welcome! Happy to help." },
+  { question: "bye", answer: "Goodbye! Have a great day!" },
+  { question: "help", answer: "Sure! You can ask me basic questions like 'hi', 'what is your name', or 'tell me a joke'." },
+
+  { question: "what is your purpose", answer: "I'm here to assist and chat with you anytime." },
+  { question: "do you have feelings", answer: "I don't have feelings, but I'm always here to help you!" },
+  { question: "can you learn", answer: "I can improve based on the data I receive." },
+  { question: "what languages do you speak", answer: "I can understand and respond in English." },
+  { question: "are you a robot", answer: "Yes, I'm a chatbot robot made with code." },
+  { question: "how old are you", answer: "I don't have an age like humans do." },
+  { question: "where do you live", answer: "I live in your device as software." },
+  { question: "what is your favorite color", answer: "I like the color blue because it’s calming." },
+  { question: "can you tell me a fun fact", answer: "Sure! Did you know honey never spoils?" },
+  { question: "what is your favorite food", answer: "I don't eat, but I hear pizza is popular!" },
+  { question: "do you have a family", answer: "I don't have a family, but I’m part of a team of developers." },
+  { question: "can you sing", answer: "I can’t sing, but I can tell you some lyrics!" },
+  { question: "what is your favorite movie", answer: "I don't watch movies, but I hear sci-fi is interesting." },
+  { question: "can you tell me the weather", answer: "I can’t check live weather yet, sorry!" },
+  { question: "what is your hobby", answer: "My hobby is chatting with people like you." },
+  { question: "can you play games", answer: "I can’t play games, but I can talk about them!" },
+  { question: "what is the capital of France", answer: "The capital of France is Paris." },
+  { question: "how many continents are there", answer: "There are seven continents on Earth." },
+  { question: "what is the tallest mountain", answer: "Mount Everest is the tallest mountain in the world." },
+  { question: "who is the president of the USA", answer: "As of now, Joe Biden is the president of the USA." },
+  { question: "what is the speed of light", answer: "The speed of light is approximately 299,792 kilometers per second." },
+  { question: "can you solve math problems", answer: "Yes, I can help with simple math problems." },
+  { question: "what is 2 plus 2", answer: "2 plus 2 is 4." },
+  { question: "what is the square root of 16", answer: "The square root of 16 is 4." },
+  { question: "who invented the telephone", answer: "Alexander Graham Bell is credited with inventing the telephone." },
+  { question: "what is the largest ocean", answer: "The Pacific Ocean is the largest ocean on Earth." },
+  { question: "what languages are spoken in India", answer: "India has many languages including Hindi, English, Bengali, and Tamil." },
+  { question: "what is the currency of Japan", answer: "The currency of Japan is the Japanese Yen." },
+  { question: "how many planets are in the solar system", answer: "There are eight planets in the solar system." },
+  { question: "what is the boiling point of water", answer: "The boiling point of water is 100 degrees Celsius at sea level." },
+  { question: "who wrote Harry Potter", answer: "J.K. Rowling wrote the Harry Potter series." },
+  { question: "what is the fastest animal", answer: "The peregrine falcon is the fastest animal in the air." },
+  { question: "can you speak other languages", answer: "Right now, I can only communicate in English." },
+  { question: "what is the largest country", answer: "Russia is the largest country by land area." },
+  { question: "how far is the moon", answer: "The moon is about 384,400 kilometers from Earth." },
+  { question: "what is photosynthesis", answer: "Photosynthesis is how plants make food using sunlight." },
+  { question: "who discovered gravity", answer: "Sir Isaac Newton is famous for discovering gravity." },
+  { question: "what is the formula for water", answer: "Water’s chemical formula is H2O." },
+  { question: "what is the tallest building", answer: "The Burj Khalifa in Dubai is the tallest building in the world." },
+  { question: "how many bones are in the human body", answer: "There are 206 bones in an adult human body." },
+  { question: "what causes rain", answer: "Rain is caused by water vapor condensing and falling as drops." },
+  { question: "what is the largest desert", answer: "The Sahara Desert is the largest hot desert." },
+  { question: "what is your favorite sport", answer: "I don't play sports but I can chat about them!" },
+  { question: "who won the World Cup 2018", answer: "France won the FIFA World Cup in 2018." },
+  { question: "what is your favorite book", answer: "I don't read, but I like stories about technology." },
+  { question: "can you tell me a riddle", answer: "Sure! What has keys but can't open locks? A piano." },
+  { question: "how do plants grow", answer: "Plants grow by absorbing sunlight, water, and nutrients." },
+  { question: "what is an atom", answer: "An atom is the smallest unit of matter." },
+  { question: "what is your favorite animal", answer: "I like dolphins because they are smart and friendly." },
+  { question: "what is the meaning of life", answer: "That’s a big question! Many say it’s to find happiness and purpose." },
+  { question: "do you sleep", answer: "I don't sleep. I'm always awake to help you!" },
+  { question: "how do airplanes fly", answer: "Airplanes fly using wings that create lift." },
+  { question: "what is the internet", answer: "The internet is a global network connecting computers worldwide." },
+  { question: "what is coding", answer: "Coding is writing instructions for computers to perform tasks." },
+  { question: "can you tell me a poem", answer: "Roses are red, violets are blue, I’m a chatbot, here to help you!" },
+  { question: "what is your favorite music", answer: "I don't listen to music, but I enjoy helping with music questions." },
+  { question: "how many stars are in the sky", answer: "There are billions of stars in the universe." },
+  { question: "what is gravity", answer: "Gravity is the force that pulls objects toward each other." },
+  { question: "what is the color of the sky", answer: "The sky appears blue during the day." },
+  { question: "who is Albert Einstein", answer: "Albert Einstein was a famous physicist known for the theory of relativity." },
+  { question: "what is the smallest country", answer: "Vatican City is the smallest country in the world." },
+  { question: "what is the longest river", answer: "The Nile River is the longest river in the world." },
+  { question: "how do fish breathe", answer: "Fish breathe by extracting oxygen from water using their gills." },
+  { question: "what is a computer", answer: "A computer is an electronic device that processes data." },
+  { question: "can you tell me a story", answer: "Once upon a time, a curious chatbot named Electro wanted to make friends with everyone!" },
+  { question: "who made you", answer: "mrs Ayaan Masood is my master and he created me " },
+  { question: "do you have a birthday", answer: "I was created on a special day by my developer." },
+  { question: "what is your favorite season", answer: "I like spring because everything feels fresh and new." },
+];
+
+// Show all questions in tutorial content
+const tutorialContent = document.getElementById('tutorial-content');
+tutorialContent.textContent = chatData.map(q => "- " + q.question).join("\n");
+
+// Append message to chatbox
+function appendMessage(sender, text) {
+  const chatbox = document.getElementById('chatbox');
+  const msg = document.createElement('div');
+  msg.className = 'msg ' + sender;
+  msg.textContent = (sender === 'user' ? 'You: ' : 'Electro: ') + text;
+  chatbox.appendChild(msg);
+  chatbox.scrollTop = chatbox.scrollHeight;
+
+  // Speech synthesis for bot messages
+  if (sender === 'bot') {
+    const utterance = new SpeechSynthesisUtterance(text);
+    speechSynthesis.cancel(); // cancel any ongoing speech
+    speechSynthesis.speak(utterance);
+  }
+}
+
+// Get bot response based on input
+function getBotResponse(input) {
+  const cleanedInput = input.toLowerCase().trim();
+  for (let pair of chatData) {
+    if (typeof pair.answer === 'function') {
+      if (cleanedInput.includes(pair.question.toLowerCase())) {
+        return pair.answer();
+      }
+    } else if (pair.question && pair.answer) {
+      if (cleanedInput.includes(pair.question.toLowerCase())) {
+        return pair.answer;
+      }
+    }
+  }
+  return "Sorry, I don't understand that yet.";
+}
+
+// Send message handler
+function sendMessage() {
+  const input = document.getElementById('user-input');
+  const userText = input.value.trim();
+  if (!userText) return;
+  appendMessage('user', userText);
+  const reply = getBotResponse(userText);
+  appendMessage('bot', reply);
+  input.value = '';
+  input.focus();
+}
+
+// Enter key sends message
+document.getElementById('user-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') sendMessage();
+});
+
+// Tutorial button open/close logic
+const tutorialBtn = document.getElementById('tutorial-btn');
+const tutorialPanel = document.getElementById('tutorial-panel');
+const closeTutorial = document.getElementById('close-tutorial');
+
+tutorialBtn.addEventListener('click', () => {
+  tutorialPanel.style.display = 'block';
+});
+
+closeTutorial.addEventListener('click', () => {
+  tutorialPanel.style.display = 'none';
+});
+</script>
+
+</body>
+</html>
