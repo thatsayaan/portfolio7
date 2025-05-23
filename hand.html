@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Virtual Painter</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: black;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-family: Arial, sans-serif;
+      user-select: none;
+    }
+
+    #camera-container {
+      position: relative;
+      border: 8px solid red;
+      box-shadow: 0 0 20px red;
+      border-radius: 10px;
+      width: 640px;
+      height: 480px;
+      margin-bottom: 20px;
+    }
+
+    canvas,
+    video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      border-radius: 10px;
+    }
+
+    #instructions {
+      max-width: 640px;
+      background: rgba(255, 0, 0, 0.2);
+      border-radius: 10px;
+      padding: 15px 25px;
+      font-size: 1.1rem;
+      line-height: 1.5;
+      box-shadow: 0 0 10px red;
+    }
+
+    #instructions h2 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    #instructions ul {
+      padding-left: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="camera-container">
+    <video id="video" width="640" height="480" autoplay muted></video>
+    <canvas id="output" width="640" height="480"></canvas>
+  </div>
+
+  <div id="instructions">
+    <h2>How It Works</h2>
+    <ul>
+      <li><strong>Draw:</strong> Raise only your <em>index finger</em> and move it to draw.</li>
+      <li><strong>Erase:</strong> Raise all <em>five fingers</em> to erase small parts around your fingertip.</li>
+      <li><strong>Stop drawing:</strong> Lower your index finger or any other combination of fingers.</li>
+    </ul>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+
+  <script>
+    const videoElement = document.getElementById('video');
+    const canvasElement = document.getElementById('output');
+    const canvasCtx = canvasElement.getContext('2d');
+    const drawCanvas = document.createElement('canvas');
+    drawCanvas.width = 640;
+    drawCanvas.height = 480;
+    const drawCtx = drawCanvas.getContext('2d');
+
+    let prevX = 0,
+      prevY = 0;
+
+    function fingersUp(landmarks) {
+      const tips = [4, 8, 12, 16, 20];
+      const fingers = [];
+
+      // Thumb
+      fingers.push(landmarks[tips[0]].x < landmarks[tips[0] - 1].x ? 1 : 0);
+
+      // Other fingers
+      for (let i = 1; i < 5; i++) {
+        fingers.push(landmarks[tips[i]].y < landmarks[tips[i] - 2].y ? 1 : 0);
+      }
+      return fingers;
+    }
+
+    const hands = new Hands({
+      locateFile: (file) =>
+        `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`,
+    });
+
+    hands.setOptions({
+      maxNumHands: 1,
+      modelComplexity: 1,
+      minDetectionConfidence: 0.7,
+      minTrackingConfidence: 0.5,
+    });
+
+    hands.onResults((results) => {
+      canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+      canvasCtx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
+      canvasCtx.drawImage(drawCanvas, 0, 0);
+
+      if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
+        const landmarks = results.multiHandLandmarks[0];
+        const fingers = fingersUp(landmarks);
+        const index = landmarks[8];
+        const cx = index.x * canvasElement.width;
+        const cy = index.y * canvasElement.height;
+
+        if (fingers[1] === 1 && fingers.reduce((a, b) => a + b) === 1) {
+          if (prevX && prevY) {
+            drawCtx.strokeStyle = 'red';
+            drawCtx.lineWidth = 5;
+            drawCtx.lineCap = 'round';
+            drawCtx.beginPath();
+            drawCtx.moveTo(prevX, prevY);
+            drawCtx.lineTo(cx, cy);
+            drawCtx.stroke();
+          }
+          prevX = cx;
+          prevY = cy;
+        } else if (fingers.reduce((a, b) => a + b) === 5) {
+          drawCtx.clearRect(cx - 15, cy - 15, 30, 30);
+          prevX = 0;
+          prevY = 0;
+        } else {
+          prevX = 0;
+          prevY = 0;
+        }
+
+        drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {
+          color: '#00FF00',
+          lineWidth: 2,
+        });
+        drawLandmarks(canvasCtx, landmarks, { color: '#FF0000', lineWidth: 1 });
+      }
+    });
+
+    const camera = new Camera(videoElement, {
+      onFrame: async () => {
+        await hands.send({ image: videoElement });
+      },
+      width: 640,
+      height: 480,
+    });
+    camera.start();
+  </script>
+</body>
+</html>
